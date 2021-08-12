@@ -1,59 +1,59 @@
 # .ec2
-Terraform configuration to bootstrap EC2 instance. 
 
-## What is has
+Terraform configuration to bootstrap EC2 instance for personal development purpose.
 
-Just to be sure we are on same page, I use this template to manage my personal development cum learning needs. So AWS resources used are according to that only. 
+## Getting started
 
-It has following resources in a nutshell:
+### Pre-requsites
 
-1. 1 EC2 instance, running Amazon Linux 2.
-2. 1 Security group to allow SSH, HTTP and HTTPS access. Additional group to allow egress from EC2 to EFS.
-3. 1 EFS volume. 
+Make sure the computer you are using to commence all these operations:
 
-## How to use these templates
+- has Terraform installed locally. 
+- make sure environment is configured with proper AWS credentials, namely `aws_access_key_id` and `aws_secret_access_key`. This will let Terraform act on your behalf.
 
-1. Import `aws_key_pair` from account. 
+### How to use
 
-For being able to SSH into your instance after provisioning, the first thing to use these template would be to obtain a `.pem` key from AWS. Once you get that, you will have to use it to create public key. 
+After you clone the repo
 
-- Run `openssl rsa -in key.pem -pubout`.
-- Paste the output (not the header and footer part) and paste it into `public_key` section of `aws_key_pair` resource. 
-- Give name to the key and use it accross the template where it is needed. 
-- Import the key, `terraform import aws_key_pair.key key`
+    terraform apply --auto-approve
 
-2. Import `aws_default_vpc` from the account.
+You'll be prompted with some basic question:
 
-You may not need this step. If that is the case, please delete the `aws_default_vpc` resource block from `networking.tf`.
+```
+var.key_name
+  name of key to be used for auth
 
-If you choose to use your default vpc created with your AWS account, you can run this commands: 
+  Enter a value: ec2-tutorial
 
-    terraform import aws_default_vpc.default <vpc-a01106c2>
+var.private_subnet_cidr
+  cidr block for private subnet
 
-You may need to import default_subnet, but I haven't got time to test that yet.
+  Enter a value: 10.0.1.0/24
 
-Visit variables file to change some defaults. 
+var.public_subnet_cidr
+  cidr block for public subnet
 
+  Enter a value: 10.0.2.0/24
+
+var.vpc_region
+  region for vpc
+
+  Enter a value: ap-south-1
+```
+
+You can also create `terraform.tfvars` with valid key value pairs for the questions asked:
+
+```
+key_name = ec2-tutorial
+vpc_region = ap-south-1
+private_subnet_cidr = 10.0.1.0/24
+public_subnet_cidr = 10.0.2.0/24
+```
+
+You can look at [AWS provider docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) at for more info on resources used in the repo.
 ## TODO
 
-- [x]: SSH Key pair
-- [x]: Security groups
 - [x]: User data
-    - [ ]: Package installation and basic configuration
-    - [ ]: EFS mount
-    - [ ]: Change SSH port
-    - [ ]: vimfiles and dotfiles
-
-```
-# EFS Mounting at startup
-yum install -y amazon-efs-utils
-yum install -y nfs-utils
-export file_system_id_1=fs-de09280f
-export efs_mount_point_1=/efs
-mkdir -p $efs_mount_point_1
-test -f "/sbin/mount.efs" && printf "\n$file_system_id_1:/ $efs_mount_point_1 efs tls,_netdev\n" >> /etc/fstab || printf "\n$file_system_id_1.efs.ap-south-1.amazonaws.com:/ $efs_mount_point_1 nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0\n" >> /etc/fstab
-test -f "/sbin/mount.efs" && printf "\n[client-info]\nsource=liw\n" >> /etc/amazon/efs/efs-utils.conf
-retryCnt=15; waitTime=30; while true; do mount -a -t efs,nfs4 defaults; if [ $? = 0 ] || [ $retryCnt -lt 1 ]; then echo File system mounted successfully; break; fi; echo File system not available, retrying to mount.; ((retryCnt--)); sleep $waitTime; done;
-
-df -h >> /home/ec2-user/disk-report.txt
-```
+  - [ ]: EFS mount
+  - [ ]: Change SSH port
+  - [ ]: vimfiles and dotfiles
