@@ -5,11 +5,15 @@ provider "aws" {
 }
 
 resource "aws_instance" "master_node" {
-  ami                     = "ami-0bcf5425cdc1d8a85"
-  instance_type           = "t3a.small"
-  availability_zone       = "ap-south-1a" # same as public subnet az
-  key_name                = var.key_name
+  ami               = "ami-0bcf5425cdc1d8a85"
+  instance_type     = "t3a.small"
+  availability_zone = var.public_availability_zone
+  key_name          = var.key_name
 
+  root_block_device {
+    volume_size = var.root_ebs_capacity
+    encrypted   = true
+  }
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.eni-public.id
@@ -35,6 +39,6 @@ resource "aws_instance" "master_node" {
   EOF
 
   tags = {
-    "Name" = "Powered by git.io/JRSD2"
+    "Name" = var.name_tag
   }
 }

@@ -13,7 +13,9 @@ Make sure the computer you are using to commence all these operations:
 
 ### How to use
 
-After you clone the repo
+There are some variables references in [main.tf](./main.tf) (starting with `var.`). All of those variable definitions can be found in [variables.tf](./variables.tf).
+
+After you have cloned this repo, you can apply:
 
     terraform apply --auto-approve
 
@@ -41,7 +43,7 @@ var.vpc_region
   Enter a value: ap-south-1
 ```
 
-You can also create `terraform.tfvars` with valid key value pairs for the questions asked:
+If you don't want to input these values on each `apply` and `destroy` then you can also create `terraform.tfvars` with valid key value pairs for the questions asked:
 
 ```
 key_name = ec2-tutorial

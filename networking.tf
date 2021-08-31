@@ -121,12 +121,12 @@ resource "aws_security_group" "allow_ssh" {
 # and the elastic IP. This resource will consume 1 ip from our 
 # public subnet.
 resource "aws_network_interface" "eni-public" {
-  subnet_id       = aws_subnet.subnet-public.id
-  private_ips     = ["10.0.2.50"]
+  subnet_id   = aws_subnet.subnet-public.id
+  private_ips = ["10.0.2.50"]
   security_groups = [
-      aws_security_group.allow_web.id,
-      aws_security_group.allow_ssh.id
-    ]
+    aws_security_group.allow_web.id,
+    aws_security_group.allow_ssh.id
+  ]
 }
 
 # 9. Elastic IP for us to connect
