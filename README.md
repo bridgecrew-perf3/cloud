@@ -4,11 +4,11 @@ Terraform configuration to bootstrap EC2 instance for personal development purpo
 
 ## Getting started
 
-### Pre-requsites
+### Prerequisites
 
 Make sure the computer you are using to commence all these operations:
 
-- has Terraform installed locally. 
+- has Terraform installed locally.
 - make sure environment is configured with proper AWS credentials, namely `aws_access_key_id` and `aws_secret_access_key`. This will let Terraform act on your behalf.
 
 ### How to use
@@ -51,9 +51,7 @@ public_subnet_cidr = 10.0.2.0/24
 ```
 
 You can look at [AWS provider docs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) at for more info on resources used in the repo.
-## TODO
 
-- [x]: User data
-  - [ ]: EFS mount
-  - [ ]: Change SSH port
-  - [ ]: vimfiles and dotfiles
+## Contribute
+
+Are you a SysOps/TechOps guy/gal? We are looking for people who are well versed in networking and have a good knowledge of AWS infrastructure. Please head over to <https://github.com/santosh/.ec2/issues> for ways to contribute to this project.
