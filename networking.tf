@@ -64,18 +64,10 @@ resource "aws_route_table_association" "a" {
 }
 
 # 7. Configure security group for tight security
-resource "aws_security_group" "allow_ssh_web" {
-  name        = "allow_ssh_web"
-  description = "Allow incoming traffic from SSH, HTTP & HTTPS"
+resource "aws_security_group" "allow_web" {
+  name        = "allow_web"
+  description = "Allow incoming traffic from HTTP & HTTPS"
   vpc_id      = aws_vpc.development-vpc.id
-
-  # Allow SSH.
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   # Allow HTTP.
   ingress {
@@ -101,9 +93,29 @@ resource "aws_security_group" "allow_ssh_web" {
   }
 
   tags = {
-    Name = "Allow web & SSH"
+    Name = "Allow web"
   }
 }
+
+
+# 7. Configure security group for tight security
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow incoming traffic from SSH"
+  vpc_id      = aws_vpc.development-vpc.id
+
+  # Allow SSH.
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  tags = {
+    Name = "Allow SSH"
+  }
+}
+
 
 # 8. This network interface is the logical mediator between subnet
 # and the elastic IP. This resource will consume 1 ip from our 
@@ -111,7 +123,10 @@ resource "aws_security_group" "allow_ssh_web" {
 resource "aws_network_interface" "eni-public" {
   subnet_id       = aws_subnet.subnet-public.id
   private_ips     = ["10.0.2.50"]
-  security_groups = [aws_security_group.allow_ssh_web.id]
+  security_groups = [
+      aws_security_group.allow_web.id,
+      aws_security_group.allow_ssh.id
+    ]
 }
 
 # 9. Elastic IP for us to connect
