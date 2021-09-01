@@ -27,3 +27,5 @@ variable "name_tag" {
 variable "root_ebs_capacity" {
   description = "EBS volume size for master_node"
 }
+variable "ssh_port" {
+}
