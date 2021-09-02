@@ -5,7 +5,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "master_node" {
-  ami               = "ami-07d2a553c8ada9631"
+  ami               = "ami-0033b3b8f8094af3b"
   instance_type     = "t3a.small"
   availability_zone = var.public_availability_zone
   key_name          = var.key_name
