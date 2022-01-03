@@ -1,4 +1,4 @@
-# .ec2
+# cloud
 
 Terraform configuration to bootstrap EC2 instance for personal development purpose.
 
@@ -56,4 +56,4 @@ You can look at [AWS provider docs](https://registry.terraform.io/providers/hash
 
 ## Contribute
 
-Are you a SysOps/TechOps guy/gal? We are looking for people who are well versed in networking and have a good knowledge of AWS infrastructure. Please head over to <https://github.com/santosh/.ec2/issues> for ways to contribute to this project.
+Are you a SysOps/TechOps guy/gal? We are looking for people who are well versed in networking and have a good knowledge of AWS infrastructure. Please head over to <https://github.com/santosh/cloud/issues> for ways to contribute to this project.
